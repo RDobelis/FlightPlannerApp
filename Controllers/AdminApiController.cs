@@ -48,15 +48,13 @@ namespace FlightPlanner.Controllers
             lock (_flightLock)
             {
                 var existingFlight = _context.Flights
-                    .Include(f => f.From)
-                    .Include(f => f.To)
-                    .FirstOrDefault(f => f.From.AirportCode == flight.From.AirportCode &&
-                                         f.To.AirportCode == flight.To.AirportCode &&
-                                         f.Carrier == flight.Carrier &&
-                                         f.DepartureTime == flight.DepartureTime &&
-                                         f.ArrivalTime == flight.ArrivalTime);
+                    .Any(f => f.From.AirportCode == flight.From.AirportCode &&
+                              f.To.AirportCode == flight.To.AirportCode &&
+                              f.Carrier == flight.Carrier &&
+                              f.DepartureTime == flight.DepartureTime &&
+                              f.ArrivalTime == flight.ArrivalTime);
 
-                if (existingFlight != null) return Conflict();
+                if (existingFlight) return Conflict();
 
                 newFlight = new Flight
                 {
