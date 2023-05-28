@@ -1,10 +1,12 @@
 ﻿using System.Linq;
-using FlightPlanner.Models;
-using FlightPlanner.Storage;
+using FlightPlanner.Core.Models;
+using FlightPlanner.Core.Services;
+using FlightPlanner.Data;
 using FlightPlanner.Validation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace FlightPlanner.Controllers
 {
@@ -14,20 +16,19 @@ namespace FlightPlanner.Controllers
     public class AdminApiController : BaseApiController
     {
         private static readonly object _flightLock = new object();
-        public AdminApiController(FlightPlannerDbContext context) : base(context)
+        private readonly IFlightService _flightService;
+        public AdminApiController(
+            IFlightPlannerDbContext context,
+            IFlightService flightService) : base(context)
         {
+            _flightService = flightService;
         }
 
         [HttpGet]
         [Route("flights/{id:int}")]
         public IActionResult GetFlights(int id)
         {
-            var flight = _context.Flights
-                .Include(f => f.From)
-                .Include(f => f.To)
-                .FirstOrDefault(f => f.Id == id);
-
-            if (flight == null) return NotFound();
+            var flight = _flightService.GetFullFlight(id);
 
             return Ok(flight);
         }
@@ -76,13 +77,7 @@ namespace FlightPlanner.Controllers
         [Route("flights/{id:int}")]
         public IActionResult DeleteFlight(int id)
         {
-            var flight = _context.Flights.FirstOrDefault(f => f.Id == id);
-
-            if (flight != null)
-            {
-                _context.Flights.Remove(flight);
-                _context.SaveChanges();
-            }
+            
 
             return Ok();
         }

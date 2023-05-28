@@ -1,6 +1,6 @@
 ﻿using System.Linq;
-using FlightPlanner.Models;
-using FlightPlanner.Storage;
+using FlightPlanner.Core.Models;
+using FlightPlanner.Data;
 using FlightPlanner.Validate;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +11,7 @@ namespace FlightPlanner.Controllers
     [ApiController]
     public class CustomerApiController : BaseApiController
     {
-        public CustomerApiController(FlightPlannerDbContext context) : base(context)
+        public CustomerApiController(IFlightPlannerDbContext context) : base(context)
         {
         }
 
