@@ -16,9 +16,9 @@ namespace FlightPlanner.Services
             return GetById<T>(id);
         }
 
-        public void Create(T entity)
+        public T Create(T entity)
         {
-            Create<T>(entity);
+            return Create<T>(entity);
         }
 
         public void Update(T entity)

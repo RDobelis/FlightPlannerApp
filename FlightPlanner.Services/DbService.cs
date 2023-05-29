@@ -21,10 +21,12 @@ namespace FlightPlanner.Services
             return _context.Set<T>().SingleOrDefault(s => s.Id == id);
         }
 
-        public void Create<T>(T entity) where T : Entity
+        public T Create<T>(T entity) where T : Entity
         {
             _context.Set<T>().Add(entity);
             _context.SaveChanges();
+
+            return entity;
         }
 
         public void Update<T>(T entity) where T : Entity

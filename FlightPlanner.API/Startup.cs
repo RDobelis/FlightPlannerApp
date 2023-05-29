@@ -1,3 +1,4 @@
+using AutoMapper;
 using FlightPlanner.API.Handlers;
 using FlightPlanner.Core.Models;
 using FlightPlanner.Core.Services;
@@ -44,6 +45,7 @@ namespace FlightPlanner.API
             services.AddScoped<IEntityService<Flight>, EntityService<Flight>>();
             services.AddScoped<IEntityService<Airport>, EntityService<Airport>>();
             services.AddScoped<IFlightService, FlightService>();
+            services.AddSingleton<IMapper>(AutoMapperConfig.CreateMapper());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

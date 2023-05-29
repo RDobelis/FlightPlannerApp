@@ -6,7 +6,7 @@ namespace FlightPlanner.Core.Services
     public interface IEntityService<T> : IDbService where T : Entity
     {
         T Get(int id);
-        public void Create(T entity);
+        public T Create(T entity);
         public void Update(T entity);
         public void Delete(T entity);
         public List<T> GetAll();
