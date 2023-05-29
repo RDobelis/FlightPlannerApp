@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
+<<<<<<< HEAD
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightPlanner.API", "FlightPlanner.API\FlightPlanner.API.csproj", "{11128375-B11F-4522-BACD-1D05927EA566}"
+=======
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlightPlanner", "FlightPlanner.csproj", "{33BE41C4-D9DB-4001-B9FA-A69830ABD1CC}"
+>>>>>>> parent of b3bf76f (checkpoint)
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightPlanner.Core", "FlightPlanner.Core\FlightPlanner.Core.csproj", "{EB8DF8E9-01AB-42E1-8366-47F4920A02E7}"
 EndProject

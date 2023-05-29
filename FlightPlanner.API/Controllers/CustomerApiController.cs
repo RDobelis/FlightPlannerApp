@@ -1,7 +1,15 @@
-﻿using FlightPlanner.API.Validate;
+﻿using System.Linq;
+<<<<<<< HEAD:FlightPlanner.API/Controllers/CustomerApiController.cs
+using FlightPlanner.API.Validate;
 using FlightPlanner.Core.Models;
 using FlightPlanner.Data;
+=======
+using FlightPlanner.Models;
+using FlightPlanner.Storage;
+using FlightPlanner.Validate;
+>>>>>>> parent of b3bf76f (checkpoint):Controllers/CustomerApiController.cs
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace FlightPlanner.API.Controllers
 {
@@ -9,7 +17,7 @@ namespace FlightPlanner.API.Controllers
     [ApiController]
     public class CustomerApiController : BaseApiController
     {
-        public CustomerApiController(IFlightPlannerDbContext context) : base(context)
+        public CustomerApiController(FlightPlannerDbContext context) : base(context)
         {
         }
 

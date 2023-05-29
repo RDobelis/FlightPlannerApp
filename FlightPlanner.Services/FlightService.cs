@@ -19,5 +19,20 @@ namespace FlightPlanner.Services
                 .Include(f => f.To)
                 .SingleOrDefault(f => f.Id == id);
         }
+
+        public bool FlightExists(Flight flight)
+        {
+            return _context.Flights.Any(f =>
+                f.ArrivalTime == flight.ArrivalTime &&
+                f.Carrier == flight.Carrier &&
+                f.DepartureTime == flight.DepartureTime &&
+                f.From.AirportCode == flight.From.AirportCode &&
+                f.From.City == flight.From.City &&
+                f.From.Country == flight.From.Country &&
+                f.To.AirportCode == flight.To.AirportCode &&
+                f.To.City == flight.To.City &&
+                f.To.Country == flight.To.Country
+            );
+        }
     }
 }

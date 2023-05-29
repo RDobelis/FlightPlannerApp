@@ -1,4 +1,4 @@
-﻿using FlightPlanner.Data;
+﻿using FlightPlanner.Storage;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlightPlanner.API.Controllers
@@ -7,7 +7,7 @@ namespace FlightPlanner.API.Controllers
     [ApiController]
     public class CleanupApiController : BaseApiController
     {
-        public CleanupApiController(IFlightPlannerDbContext context) : base(context)
+        public CleanupApiController(FlightPlannerDbContext context) : base(context)
         {
         }
 

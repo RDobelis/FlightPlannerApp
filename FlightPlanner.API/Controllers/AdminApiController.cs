@@ -1,4 +1,6 @@
-﻿using FlightPlanner.API.Models;
+﻿using System.Linq;
+using AutoMapper;
+using FlightPlanner.API.Models;
 using FlightPlanner.API.Validation;
 using FlightPlanner.Core.Models;
 using FlightPlanner.Core.Services;
@@ -14,13 +16,15 @@ namespace FlightPlanner.API.Controllers
     [Authorize]
     public class AdminApiController : BaseApiController
     {
-        private static readonly object _flightLock = new object();
         private readonly IFlightService _flightService;
+        private readonly IMapper _mapper;
         public AdminApiController(
             IFlightPlannerDbContext context,
-            IFlightService flightService) : base(context)
+            IFlightService flightService,
+            IMapper mapper) : base(context)
         {
             _flightService = flightService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -29,55 +33,29 @@ namespace FlightPlanner.API.Controllers
         {
             var flight = _flightService.GetFullFlight(id);
 
-            return Ok(flight);
+            if (flight == null) return NotFound();
+
+            return Ok(_mapper.Map<AddFlightRequest>(flight));
         }
 
         [HttpPut]
         [Route("flights")]
-        public IActionResult AddFlight(AddFlightRequest flight)
+        public IActionResult AddFlight(AddFlightRequest request)
         {
-            if (flight == null) return BadRequest();
-            
-            if (ValidateFlight.HasInvalidFlightDetails(flight) ||
-                ValidateFlight.HasInvalidAirport(flight) ||
-                ValidateFlight.HasInvalidFlightTime(flight))
-                return BadRequest();
+            var flight = _mapper.Map<Flight>(request);
 
-            Flight newFlight = null;
+            if (_flightService.FlightExists(flight)) return Conflict();
 
-            lock (_flightLock)
-            {
-                var existingFlight = _context.Flights
-                    .Any(f => f.From.AirportCode == flight.From.Airport &&
-                              f.To.AirportCode == flight.To.Airport &&
-                              f.Carrier == flight.Carrier &&
-                              f.DepartureTime == flight.DepartureTime &&
-                              f.ArrivalTime == flight.ArrivalTime);
+            _flightService.Create(flight);
 
-                if (existingFlight) return Conflict();
-
-                newFlight = new Flight
-                {
-                    From = flight.From,
-                    To = flight.To,
-                    Carrier = flight.Carrier,
-                    DepartureTime = flight.DepartureTime,
-                    ArrivalTime = flight.ArrivalTime
-                };
-
-                _context.Flights.Add(newFlight);
-                _context.SaveChanges();
-            }
-
-            return Created("", newFlight);
+            return Created("", _mapper.Map<AddFlightRequest>(flight));
         }
 
         [HttpDelete]
         [Route("flights/{id:int}")]
         public IActionResult DeleteFlight(int id)
-        {
+        { 
             
-
             return Ok();
         }
     }
