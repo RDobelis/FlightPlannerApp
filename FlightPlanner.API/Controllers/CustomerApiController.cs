@@ -1,11 +1,9 @@
-﻿using System.Linq;
+﻿using FlightPlanner.API.Validate;
 using FlightPlanner.Core.Models;
 using FlightPlanner.Data;
-using FlightPlanner.Validate;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
-namespace FlightPlanner.Controllers
+namespace FlightPlanner.API.Controllers
 {
     [Route("api")]
     [ApiController]

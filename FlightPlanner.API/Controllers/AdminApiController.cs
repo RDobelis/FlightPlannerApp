@@ -1,14 +1,13 @@
-﻿using System.Linq;
+﻿using FlightPlanner.API.Models;
+using FlightPlanner.API.Validation;
 using FlightPlanner.Core.Models;
 using FlightPlanner.Core.Services;
 using FlightPlanner.Data;
-using FlightPlanner.Validation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 
-namespace FlightPlanner.Controllers
+namespace FlightPlanner.API.Controllers
 {
     [Route("admin-api")]
     [ApiController]
@@ -49,8 +48,8 @@ namespace FlightPlanner.Controllers
             lock (_flightLock)
             {
                 var existingFlight = _context.Flights
-                    .Any(f => f.From.AirportCode == flight.From.AirportCode &&
-                              f.To.AirportCode == flight.To.AirportCode &&
+                    .Any(f => f.From.AirportCode == flight.From.Airport &&
+                              f.To.AirportCode == flight.To.Airport &&
                               f.Carrier == flight.Carrier &&
                               f.DepartureTime == flight.DepartureTime &&
                               f.ArrivalTime == flight.ArrivalTime);

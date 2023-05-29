@@ -1,7 +1,7 @@
 ﻿using FlightPlanner.Data;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FlightPlanner.Controllers
+namespace FlightPlanner.API.Controllers
 {
 
 

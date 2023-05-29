@@ -1,19 +1,19 @@
+using FlightPlanner.API.Handlers;
 using FlightPlanner.Core.Models;
 using FlightPlanner.Core.Services;
 using FlightPlanner.Data;
+using FlightPlanner.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using FlightPlanner.Handlers;
-using FlightPlanner.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 
 
-namespace FlightPlanner
+namespace FlightPlanner.API
 {
     public class Startup
     {

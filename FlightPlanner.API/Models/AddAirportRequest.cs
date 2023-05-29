@@ -1,4 +1,4 @@
-﻿namespace FlightPlanner.Models
+﻿namespace FlightPlanner.API.Models
 {
     public class AddAirportRequest
     {
