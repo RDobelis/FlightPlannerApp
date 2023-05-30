@@ -26,8 +26,6 @@ namespace FlightPlanner.API
                 cfg.CreateMap<Flight, AddFlightRequest>();
             });
 
-            config.AssertConfigurationIsValid();
-
             return config.CreateMapper();
         }
     }
