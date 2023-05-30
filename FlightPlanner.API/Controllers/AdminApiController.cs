@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FlightPlanner.API.Controllers
 {
-    [Microsoft.AspNetCore.Components.Route("admin-api")]
+    [Route("admin-api")]
     [ApiController]
     [Authorize]
     public class AdminApiController : BaseApiController
@@ -51,8 +51,12 @@ namespace FlightPlanner.API.Controllers
         [HttpDelete]
         [Route("flights/{id:int}")]
         public IActionResult DeleteFlight(int id)
-        { 
+        {
+            var flight = _flightService.Get(id);
             
+            if (flight == null) return NotFound();
+
+            _flightService.Delete(flight);
             return Ok();
         }
     }

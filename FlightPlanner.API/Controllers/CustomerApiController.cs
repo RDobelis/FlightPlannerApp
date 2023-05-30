@@ -1,6 +1,6 @@
 ﻿using System.Linq;
-using FlightPlanner.API.Validate;
 using FlightPlanner.Core.Models;
+using FlightPlanner.Core.Services;
 using FlightPlanner.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,8 +11,16 @@ namespace FlightPlanner.API.Controllers
     [ApiController]
     public class CustomerApiController : BaseApiController
     {
-        public CustomerApiController(IFlightPlannerDbContext context) : base(context)
+        private readonly ICustomerService _customerService;
+        private readonly IAirportService _airportService;
+
+        public CustomerApiController(
+            IFlightPlannerDbContext context, 
+            IAirportService airportService, 
+            ICustomerService customerService) : base(context)
         {
+            _airportService = airportService;
+            _customerService = customerService;
         }
 
         [HttpGet]
@@ -20,14 +28,9 @@ namespace FlightPlanner.API.Controllers
         public IActionResult GetAirport(string search)
         {
             if (string.IsNullOrEmpty(search)) return BadRequest();
-            
+
             var lowerSearch = search.Trim().ToLower();
-            
-            var result = _context.Airports
-                .Where(a => a.AirportCode.Contains(lowerSearch) || 
-                            a.City.Contains(lowerSearch) || 
-                            a.Country.Contains(lowerSearch))
-                .ToList();
+            var result = _airportService.GetAllAirports(lowerSearch);
 
             return Ok(result);
         }
@@ -36,26 +39,12 @@ namespace FlightPlanner.API.Controllers
         [Route("flights/search")]
         public IActionResult SearchFlight(FlightSearch searchFlight)
         {
-            if (ValidateSearch.HasInvalidDetails(searchFlight) ||
-                ValidateSearch.MatchingAirport(searchFlight))
+            if (_customerService.HasInvalidDetails(searchFlight) ||
+                _customerService.MatchingAirport(searchFlight))
                 return BadRequest();
 
-
-            var result = _context.Flights
-                .Include(f => f.From)
-                .Include(f => f.To)
-                .Where(f => f.From.AirportCode == searchFlight.From &&
-                            f.To.AirportCode == searchFlight.To &&
-                            f.DepartureTime.StartsWith(searchFlight.DepartureDate))
-                .ToList();
-
-            var response = new 
-            {
-                page = 0,
-                totalItems = result.Count,
-                items = result
-            };
-                    
+            var response = _customerService.FindFlights(searchFlight);
+            
             return Ok(response);
         }
 
@@ -63,12 +52,8 @@ namespace FlightPlanner.API.Controllers
         [Route("flights/{id:int}")]
         public IActionResult GetFlight(int id)
         {
-            var flight = _context.Flights
-                .Include(f => f.From)
-                .Include(f => f.To)
-                .FirstOrDefault(f => f.Id == id);
-
-            if (flight == null) return NotFound();
+            var flight = _customerService.GetFullFlight(id);
+            if (flight == null) return BadRequest();
 
             return Ok(flight);
         }

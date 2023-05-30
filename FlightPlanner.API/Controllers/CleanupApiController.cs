@@ -1,4 +1,5 @@
-﻿using FlightPlanner.Data;
+﻿using FlightPlanner.Core.Services;
+using FlightPlanner.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlightPlanner.API.Controllers
@@ -7,17 +8,17 @@ namespace FlightPlanner.API.Controllers
     [ApiController]
     public class CleanupApiController : BaseApiController
     {
-        public CleanupApiController(IFlightPlannerDbContext context) : base(context)
+        private readonly ICleanupService _cleanupService;
+        public CleanupApiController(IFlightPlannerDbContext context, ICleanupService cleanupService) : base(context)
         {
+            _cleanupService = cleanupService;
         }
 
         [HttpPost]
         [Route("clear")]
         public IActionResult Clear()
         {
-            _context.Flights.RemoveRange(_context.Flights);
-            _context.Airports.RemoveRange(_context.Airports);
-            _context.SaveChanges();
+            _cleanupService.CleanupDatabase();
 
             return Ok();
         }

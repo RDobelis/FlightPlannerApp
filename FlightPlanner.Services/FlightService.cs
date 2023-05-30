@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using FlightPlanner.Core.Models;
 using FlightPlanner.Core.Services;
 using FlightPlanner.Data;
@@ -33,6 +34,35 @@ namespace FlightPlanner.Services
                 f.To.City == flight.To.City &&
                 f.To.Country == flight.To.Country
             );
+        }
+
+        public bool HasInvalidFlightDetails(Flight flight)
+        {
+            if (flight == null || flight.From == null || flight.To == null) return true;
+
+            return string.IsNullOrWhiteSpace(flight.From.AirportCode) ||
+                   string.IsNullOrWhiteSpace(flight.To.AirportCode) ||
+                   string.IsNullOrWhiteSpace(flight.From.Country) ||
+                   string.IsNullOrWhiteSpace(flight.To.Country) ||
+                   string.IsNullOrWhiteSpace(flight.From.City) ||
+                   string.IsNullOrWhiteSpace(flight.To.City) ||
+                   string.IsNullOrWhiteSpace(flight.Carrier) ||
+                   string.IsNullOrWhiteSpace(flight.DepartureTime) ||
+                   string.IsNullOrWhiteSpace(flight.ArrivalTime);
+        }
+
+        public bool HasInvalidFlightTime(Flight flight)
+        {
+            if (DateTime.TryParse(flight.ArrivalTime, out var arrivalTime) &&
+                DateTime.TryParse(flight.DepartureTime, out var departureTime))
+                return arrivalTime <= departureTime;
+
+            return false;
+        }
+
+        public bool HasInvalidAirport(Flight flight)
+        {
+            return flight.From.AirportCode.Trim().ToUpper() == flight.To.AirportCode.Trim().ToUpper();
         }
     }
 }
