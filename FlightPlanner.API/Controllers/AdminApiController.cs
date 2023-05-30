@@ -1,17 +1,14 @@
-﻿using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using FlightPlanner.API.Models;
-using FlightPlanner.API.Validation;
 using FlightPlanner.Core.Models;
 using FlightPlanner.Core.Services;
 using FlightPlanner.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace FlightPlanner.API.Controllers
 {
-    [Route("admin-api")]
+    [Microsoft.AspNetCore.Components.Route("admin-api")]
     [ApiController]
     [Authorize]
     public class AdminApiController : BaseApiController
