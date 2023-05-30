@@ -23,6 +23,8 @@ namespace FlightPlanner.Services
 
         public bool FlightExists(Flight flight)
         {
+            if (flight.From == null || flight.To == null) return false;
+            
             return _context.Flights.Any(f =>
                 f.ArrivalTime == flight.ArrivalTime &&
                 f.Carrier == flight.Carrier &&

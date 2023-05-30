@@ -15,6 +15,7 @@ namespace FlightPlanner.API.Controllers
     {
         private readonly IFlightService _flightService;
         private readonly IMapper _mapper;
+
         public AdminApiController(
             IFlightPlannerDbContext context,
             IFlightService flightService,
@@ -41,6 +42,13 @@ namespace FlightPlanner.API.Controllers
         {
             var flight = _mapper.Map<Flight>(request);
 
+            if (flight == null) return BadRequest();
+
+            if (_flightService.HasInvalidAirport(flight) ||
+                _flightService.HasInvalidFlightDetails(flight) ||
+                _flightService.HasInvalidFlightTime(flight))
+                return BadRequest();
+
             if (_flightService.FlightExists(flight)) return Conflict();
 
             _flightService.Create(flight);
@@ -53,7 +61,7 @@ namespace FlightPlanner.API.Controllers
         public IActionResult DeleteFlight(int id)
         {
             var flight = _flightService.Get(id);
-            
+
             if (flight == null) return NotFound();
 
             _flightService.Delete(flight);

@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using FlightPlanner.Core.Services;
+﻿using FlightPlanner.Core.Services;
 using FlightPlanner.Data;
 
 namespace FlightPlanner.Services
@@ -15,12 +14,8 @@ namespace FlightPlanner.Services
 
         public void CleanupDatabase()
         {
-            var flights = _context.Flights.ToList();
-            _context.Flights.RemoveRange(flights);
-
-            var airports = _context.Airports.ToList();
-            _context.Airports.RemoveRange(airports);
-
+            _context.Flights.RemoveRange(_context.Flights);
+            _context.Airports.RemoveRange(_context.Airports);
             _context.SaveChanges();
         }
     }
