@@ -64,6 +64,10 @@ namespace FlightPlanner.Services
 
         public bool HasInvalidAirport(Flight flight)
         {
+            if (flight == null) return true;
+            if (flight.From == null || flight.To == null) return true;
+            if (flight.From.AirportCode == null || flight.To.AirportCode == null) return true;
+
             return flight.From.AirportCode.Trim().ToUpper() == flight.To.AirportCode.Trim().ToUpper();
         }
     }

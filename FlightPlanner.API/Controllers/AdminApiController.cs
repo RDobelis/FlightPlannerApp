@@ -39,7 +39,7 @@ namespace FlightPlanner.API.Controllers
         [HttpPut]
         [Route("flights")]
         public IActionResult AddFlight(AddFlightRequest request)
-        {
+        { 
             var flight = _mapper.Map<Flight>(request);
 
             if (flight == null) return BadRequest();
