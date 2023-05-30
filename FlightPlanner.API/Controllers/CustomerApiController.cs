@@ -1,9 +1,7 @@
-﻿using System.Linq;
-using FlightPlanner.Core.Models;
+﻿using FlightPlanner.Core.Models;
 using FlightPlanner.Core.Services;
 using FlightPlanner.Data;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace FlightPlanner.API.Controllers
 {
