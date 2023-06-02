@@ -14,6 +14,7 @@ namespace FlightPlanner.Services
 
         public List<Airport> GetAllAirports(string search)
         {
+            search = search.ToLower().Trim();
             return _context.Airports
                 .Where(a =>
                     a.AirportCode.Contains(search) ||

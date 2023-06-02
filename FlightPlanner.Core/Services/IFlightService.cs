@@ -1,4 +1,5 @@
-﻿using FlightPlanner.Core.Models;
+﻿using System.Collections.Generic;
+using FlightPlanner.Core.Models;
 
 namespace FlightPlanner.Core.Services
 {
@@ -6,8 +7,6 @@ namespace FlightPlanner.Core.Services
     {
         Flight GetFullFlight(int id);
         public bool FlightExists(Flight flight);
-        public bool HasInvalidFlightDetails(Flight flight);
-        public bool HasInvalidFlightTime(Flight flight);
-        public bool HasInvalidAirport(Flight flight);
+        List<Flight> SearchFlights(FlightSearch request);
     }
 }

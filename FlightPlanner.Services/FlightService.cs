@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using FlightPlanner.Core.Models;
 using FlightPlanner.Core.Services;
@@ -23,8 +24,6 @@ namespace FlightPlanner.Services
 
         public bool FlightExists(Flight flight)
         {
-            if (flight.From == null || flight.To == null) return false;
-            
             return _context.Flights.Any(f =>
                 f.ArrivalTime == flight.ArrivalTime &&
                 f.Carrier == flight.Carrier &&
@@ -38,37 +37,11 @@ namespace FlightPlanner.Services
             );
         }
 
-        public bool HasInvalidFlightDetails(Flight flight)
+        public List<Flight> SearchFlights(FlightSearch request)
         {
-            if (flight == null || flight.From == null || flight.To == null) return true;
-
-            return string.IsNullOrWhiteSpace(flight.From.AirportCode) ||
-                   string.IsNullOrWhiteSpace(flight.To.AirportCode) ||
-                   string.IsNullOrWhiteSpace(flight.From.Country) ||
-                   string.IsNullOrWhiteSpace(flight.To.Country) ||
-                   string.IsNullOrWhiteSpace(flight.From.City) ||
-                   string.IsNullOrWhiteSpace(flight.To.City) ||
-                   string.IsNullOrWhiteSpace(flight.Carrier) ||
-                   string.IsNullOrWhiteSpace(flight.DepartureTime) ||
-                   string.IsNullOrWhiteSpace(flight.ArrivalTime);
-        }
-
-        public bool HasInvalidFlightTime(Flight flight)
-        {
-            if (DateTime.TryParse(flight.ArrivalTime, out var arrivalTime) &&
-                DateTime.TryParse(flight.DepartureTime, out var departureTime))
-                return arrivalTime <= departureTime;
-
-            return false;
-        }
-
-        public bool HasInvalidAirport(Flight flight)
-        {
-            if (flight == null) return true;
-            if (flight.From == null || flight.To == null) return true;
-            if (flight.From.AirportCode == null || flight.To.AirportCode == null) return true;
-
-            return flight.From.AirportCode.Trim().ToUpper() == flight.To.AirportCode.Trim().ToUpper();
+            return _context.Flights
+                .Where(f => f.To.AirportCode == request.To && f.From.AirportCode == request.From)
+                .ToList();
         }
     }
 }

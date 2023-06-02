@@ -2,8 +2,10 @@ using AutoMapper;
 using FlightPlanner.API.Handlers;
 using FlightPlanner.Core.Models;
 using FlightPlanner.Core.Services;
+using FlightPlanner.Core.Validations;
 using FlightPlanner.Data;
 using FlightPlanner.Services;
+using FlightPlanner.Services.Validations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -48,6 +50,14 @@ namespace FlightPlanner.API
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<ICleanupService, CleanupService>();
             services.AddSingleton<IMapper>(AutoMapperConfig.CreateMapper());
+            services.AddScoped<IValidate, FlightValidator>();
+            services.AddScoped<IValidate, AirportValidator>();
+            services.AddScoped<IValidate, AirportPropsValidator>();
+            services.AddScoped<IValidate, FlightTimesValidator>();
+            services.AddScoped<IValidate, FlightCarrierValidator>();
+            services.AddScoped<IValidate, MatchingAirportsValidator>();
+            services.AddScoped<IValidate, FlightTimeWindowValidator>();
+            services.AddScoped<IFlightSearchValidate, FlightSearchValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

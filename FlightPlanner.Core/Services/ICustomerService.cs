@@ -1,12 +1,12 @@
-﻿using FlightPlanner.Core.Models;
+﻿using System.Collections.Generic;
+using FlightPlanner.Core.Models;
 
 namespace FlightPlanner.Core.Services
 {
     public interface ICustomerService
     {
-        PageResult FindFlights(FlightSearch searchFlight);
+        PageResult FindFlights(FlightSearch search);
         Flight GetFullFlight(int id);
-        bool HasInvalidDetails(FlightSearch searchFlight);
-        bool MatchingAirport(FlightSearch searchFlight);
+        List<Airport> GetAllAirports(string search);
     }
 }
