@@ -20,10 +20,12 @@ namespace FlightPlanner.API.Controllers
         public CustomerApiController(
             IFlightPlannerDbContext context,
             ICustomerService customerService,
-            IFlightSearchValidate flightSearchValidator) : base(context)
+            IFlightSearchValidate flightSearchValidator,
+            IMapper mapper) : base(context)
         {
             _customerService = customerService;
             _flightSearchValidator = flightSearchValidator;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -38,10 +40,15 @@ namespace FlightPlanner.API.Controllers
 
             foreach (var airport in result)
             {
-                searchResult.Add(_mapper.Map<AirportSearchResult>(airport));
+                searchResult.Add(new AirportSearchResult
+                {
+                    Airport = airport.AirportCode,
+                    City = airport.City,
+                    Country = airport.Country
+                });
             }
 
-            return Ok(result);
+            return Ok(searchResult);
         }
 
         [HttpPost]
@@ -49,8 +56,12 @@ namespace FlightPlanner.API.Controllers
         public IActionResult SearchFlight(FlightSearch searchFlight)
         {
             if (_flightSearchValidator.IsValid(searchFlight)) return BadRequest();
-            
-            return Ok(_customerService.FindFlights(searchFlight));
+
+            var flights = _customerService.FindFlights(searchFlight);
+
+            PagedFlightSearchResult searchResult = _mapper.Map<PagedFlightSearchResult>(flights);
+
+            return Ok(searchResult);
         }
 
         [HttpGet]
@@ -59,9 +70,11 @@ namespace FlightPlanner.API.Controllers
         {
             var flight = _customerService.GetFullFlight(id);
 
-            if (flight == null) return BadRequest();
+            if (flight == null) return NotFound();
 
-            return Ok(_mapper.Map<FlightSearchResult>(flight));
+            var flightResult = _mapper.Map<FlightSearchResult>(flight);
+
+            return Ok(flightResult);
         }
     }
 }
