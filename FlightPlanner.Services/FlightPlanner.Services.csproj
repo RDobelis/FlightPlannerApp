@@ -17,11 +17,9 @@
     </PackageReference>
   </ItemGroup>
 
-<<<<<<<< HEAD:FlightPlanner.Data/FlightPlanner.Data.csproj
   <ItemGroup>
     <ProjectReference Include="..\FlightPlanner.Core\FlightPlanner.Core.csproj" />
+    <ProjectReference Include="..\FlightPlanner.Data\FlightPlanner.Data.csproj" />
   </ItemGroup>
 
-========
->>>>>>>> parent of b3bf76f (checkpoint):FlightPlanner.csproj
 </Project>
