@@ -11,17 +11,16 @@ namespace FlightPlanner.API.Controllers
 {
     [Route("api")]
     [ApiController]
-    public class CustomerApiController : BaseApiController
+    public class CustomerApiController : ControllerBase
     {
         private readonly ICustomerService _customerService;
         private readonly IMapper _mapper;
         private readonly IFlightSearchValidate _flightSearchValidator;
 
         public CustomerApiController(
-            IFlightPlannerDbContext context,
             ICustomerService customerService,
             IFlightSearchValidate flightSearchValidator,
-            IMapper mapper) : base(context)
+            IMapper mapper)
         {
             _customerService = customerService;
             _flightSearchValidator = flightSearchValidator;

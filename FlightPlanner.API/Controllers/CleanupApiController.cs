@@ -6,10 +6,10 @@ namespace FlightPlanner.API.Controllers
 {
     [Route("testing-api")]
     [ApiController]
-    public class CleanupApiController : BaseApiController
+    public class CleanupApiController : ControllerBase
     {
         private readonly ICleanupService _cleanupService;
-        public CleanupApiController(IFlightPlannerDbContext context, ICleanupService cleanupService) : base(context)
+        public CleanupApiController(ICleanupService cleanupService)
         {
             _cleanupService = cleanupService;
         }

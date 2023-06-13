@@ -14,7 +14,7 @@ namespace FlightPlanner.API.Controllers
     [Route("admin-api")]
     [ApiController]
     [Authorize]
-    public class AdminApiController : BaseApiController
+    public class AdminApiController : ControllerBase
     {
         private readonly IFlightService _flightService;
         private static readonly object _lock = new object();
@@ -22,10 +22,9 @@ namespace FlightPlanner.API.Controllers
         private readonly IEnumerable<IValidate> _validators;
 
         public AdminApiController(
-            IFlightPlannerDbContext context,
             IFlightService flightService,
             IMapper mapper,
-            IEnumerable<IValidate> validators) : base(context)
+            IEnumerable<IValidate> validators)
         {
             _flightService = flightService;
             _mapper = mapper;
